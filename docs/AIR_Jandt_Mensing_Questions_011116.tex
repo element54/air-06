@@ -1,0 +1,59 @@
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
+%\documentclass[a4paper,headsepline,12pt,bibliography=totoc]{scrreprt}
+\documentclass[a4paper,headsepline,12pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[hyphens,spaces,obeyspaces]{url}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage[backend=bibtex,style=numeric-comp]{biblatex}
+\usepackage[babel,style=english,english=american]{csquotes}
+%\usepackage[singlespacing]{setspace}
+\usepackage{lmodern}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+%\usepackage{cite}
+\usepackage[binary-units]{siunitx}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{mathcomp}
+\usepackage{amsmath}
+\usepackage[font=small]{caption} 
+\usepackage[font=footnotesize]{subcaption}
+%\usepackage{ae}
+\usepackage{caption}
+\usepackage[final]{graphicx}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{xspace}
+\usepackage{amssymb}
+%\usepackage{showframe}
+%\usepackage[prependcaption,textsize=tiny,colorinlistoftodos]{todonotes}
+\usepackage[disable]{todonotes}
+
+% alle floats zentrieren
+\makeatletter
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+
+
+
+\title{AIR - Questions 5}
+\date{\today}
+\author{Maximilian Mensing\\Torsten Jandt}
+
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    \item \textbf{Q:} Which node is to be expanded next by greedy Search? \\
+    A: The goal which appears to be closest to the target.
+    \item \textbf{Q:} I greedy search complete?\\
+    A: No. It can get stuck in loops.
+    \item \textbf{Q:} Name the completeness requirements for A* graph searches.\\
+    A: (1): No infinite path has a finite cost. (2) Either the heuristic needs to be consistent, or the Graph-Search algorithm has to be modified
+\end{enumerate}
+
+\end{document}

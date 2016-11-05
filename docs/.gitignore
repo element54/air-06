@@ -4,6 +4,8 @@
 *.log
 *.lot
 *.fls
+*.synctex.gz
+*.run.xml
 *.out
 *.toc
 *.fmt
