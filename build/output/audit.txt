@@ -1,0 +1,37 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Fri Nov  4 01:15:58 2016
+Invocation: foremost CMakeCache.txt CMakeFiles cmake_install.cmake Makefile 
+Output directory: /home/max/Documents/MAS/AIR/air_assignment_06/build/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: CMakeCache.txt
+Start: Fri Nov  4 01:15:58 2016
+Length: 11 KB (11730 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+Finish: Fri Nov  4 01:15:58 2016
+------------------------------------------------------------------
+File: cmake_install.cmake
+Start: Fri Nov  4 01:15:58 2016
+Length: 1 KB (1412 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+Finish: Fri Nov  4 01:15:58 2016
+------------------------------------------------------------------
+File: Makefile
+Start: Fri Nov  4 01:15:58 2016
+Length: 6 KB (6631 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+Finish: Fri Nov  4 01:15:58 2016
+
+0 FILES EXTRACTED
+	
+------------------------------------------------------------------
+
+Foremost finished at Fri Nov  4 01:15:58 2016
