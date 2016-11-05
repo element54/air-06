@@ -33,22 +33,22 @@ void Environment::run() {
 		cout << "Select algorithm: " << endl;
 		cout << "(1)Greedy (2)A*" << endl;
 		cin >> solver;
-		
+
 		if(solver =="1")
 			theSolver = Solver::GREEDY;
 		else
 			theSolver = Solver::A_STAR;
-		
+
 		cout << "Select heuristic: " << endl;
 		cout << "(1) Misplaced tiles (2) Manhattan distance" << endl;
 		cin >> heuristic;
-		
+
 		if(heuristic == "1")
 			theHeuristic = Heuristic::MISPLACED_TILES;
 		else
 			theHeuristic = Heuristic::MANHATTAN_DISTANCE;
-		
-		
+
+
 		generate_puzzle();
 		print_puzzle();
 		Agent anAgent(puzzle, theSolver, theHeuristic);
@@ -58,7 +58,7 @@ void Environment::run() {
 		cout << "(1) Yes (2) No " << endl;
 		cin >> ans;
 	}
-	
+
 
 }
 
@@ -68,7 +68,7 @@ void Environment::generate_puzzle() {
 	bool inserted = false;
 	srand((unsigned) time(NULL));
 
-	int array[] = { 2, 5, 3, 4, 0, 7, 8, 6, 1 };
+	int array[] = { 1, 4, 8, 3, 6, 2, 0, 5, 7 };
 	int index = 0;
 	for (int rows = 0; rows < NUM_ROWS; rows++) {
 		for (int cols = 0; cols < NUM_COLS; cols++) {
@@ -87,4 +87,3 @@ void Environment::print_puzzle() {
 		std::cout << "|" << std::endl;
 	}
 }
-
