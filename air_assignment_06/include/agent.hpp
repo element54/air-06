@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <map>
 
 #define NUM_COLS 3
 #define NUM_ROWS 3
@@ -41,7 +42,14 @@ public:
 private:
 
 	Puzzle puzzle;
+    Puzzle start;
     Puzzle goal;
+
+
+    std::vector<Puzzle> fringe;
+    std::map<Puzzle, Puzzle> parents;
+    std::map<Puzzle, std::pair<int, int>> costs;
+    std::vector<Puzzle> visited;
 
 	//Solver solver;
 	//Heuristic heuristic;
@@ -57,8 +65,9 @@ private:
 	void print_puzzle(Puzzle& puzzle);
 	int mkSwitches(Puzzle& puzzle);
 
-    Puzzle switch_nums(Puzzle puzzle, int row1, int col1, int row2, int col2);
-    std::pair<Puzzle, int> get_cheapest(Puzzle current, int row, int col, int newrow, int newcol, std::pair<Puzzle, int> cheapest);
+    Puzzle switch_nums(int row1, int col1, int row2, int col2);
+    void add_node(int row, int col, int newrow, int newcol);
+    bool in_parents(Puzzle &puzzle);
 
 };
 
