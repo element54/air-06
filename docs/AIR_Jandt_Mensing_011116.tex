@@ -27,7 +27,6 @@
 \usepackage{enumitem}
 \usepackage{adjustbox}
 \usepackage{tikz}
-\usetikzlibrary{mindmap}
 \usepackage{xspace}
 \usepackage{amssymb}
 %\usepackage{showframe}
@@ -50,87 +49,35 @@
 \newcommand{\eg}{e.\,g.\xspace}
 
 
-\title{AIR - Homework 5}
+\title{AIR - Homework 6}
 \date{\today}
 \author{Maximilian Mensing\\Torsten Jandt}
 
 
 \begin{document}
 \maketitle{}
-\section{Informed Search Strategies}
-\begin{adjustbox}{totalheight=19cm}
-\begin{tikzpicture}[
-  mindmap,
-  every node/.style={concept, execute at begin node=\hskip0pt},
-  root concept/.append style={
-    concept color=black, fill=white, line width=1ex, text=black
-  },
-  text=white, grow cyclic,
-  level 1/.append style={level distance=6.5cm,sibling angle=120},
-  level 2/.append style={level distance=3.5cm,sibling angle=60},
-  level 3/.append style={level distance=2.5cm,sibling angle=60}
-]
+\section{Uniform-Cost Search}
+Uniform-cost search (\emph{UCS}), breadth first search (\emph{BFS}) and depth first search (\emph{DFS}) require no heuristics. In UCS nodes are only distinguished by \( g(n)\). This means, when expanding to a new node, UCS expands to the node, which has the lowest path cost so far.
+\paragraph{BFS is a Case of UCS}
+BFS is a special version of UCS. In case the expansion of any node costs the same, UCS behaves like BFS.
+Uniform Cost search is an 
 
-\node[root concept] {Informed Search Strategies} % root
-child[concept color=yellow!50!black] { node  {Heuristic searchmethods}
-	child[concept color=orange] { node {Heuristic tree search}
-		child { node {Expand most desirable unexpanded nod} }
-		child { node {Fringe = All generated unexpanded nodes} }
-		child { node {Fringe keeps visited noes sorted by desirability} }
-	}
-	child[concept color=orange!50!black] { node {Heuristic graph search}
-	}
-}
-child[concept color=purple!50!black] { node {A* tree search}
-	child { node {Complete} }
-	child { node {Worst case: \(O(state space)\)} }
-	child { node { Best case: \(O(d)\)}}
-	child { node {Fixed-Parameter Algorithms} }
-	child { node {A* needs an admissible heuristic}}
-	child { node {\(g(n)\) = cost to reach \(n\)} }
-	child { node {\(h(n)\) = estimated cost to reach goal from \(n\)} }
-	child { node {\(f(n)\) = \(h(n)\) + \(g(n)\)} }
-	child[concept color=red!50!black] { node {Iterative-Deepening A* }
-		child { node {Reduces memory requirements} }
-		child { node {Cut-off function \(f(n)\) (Smallest cost of any node in prevcious generation)} }
-		child { node {Fixed-Parameter Algorithms} }
-	}
-}
-child[concept color=green!50!black] { node {Greedy search}
-child { node {Not complete} }
-child { node {Time Complexity \(O(b^m)\)} }
-child { node {Space Complexity \(O(b^m)\)} }
-child { node {Not optimal} }
-child { node {Heuristic estimates of cost from n to the closest goal} }
-child { node {Remembers all of fringe} }};
-\end{tikzpicture}
-\end{adjustbox}
+\paragraph{UCS, DFS and BFS are Special Cases of Greedy Best-First Search}
+BFS is a case of Greedy Best-First Search, when the cost to reach any node in the next layer is higher than the cost to reach a nodes in the same layer. This way the algorithm traverses the search tree layer wise. 
+
+Since greedy search algorithms do not use backtracking, the first node in the next layer, which is reachable from a current node, has to be reachable at the lowest path cost. In this case, DFS and  Greedy Best-First Search would behave alike until the goal has been reached. 
+
+\paragraph{UCS is a Case of A*}
+In general, UCS is the uninformed version A*. While UCS has no information at any point how close it is to the goal, this information if provided to A* by heuristics.
+%UCS considers all reachable nodes, in order to keep the total path cost at a minimum, whereas A* expands always the path with the lowest cost \( f(n)\). Whenever 
+
 \newpage
-\section{IDA vs DFS}
-In state spaces with a very high number of states in every layer DFS ( and thus a high branching factor) performs better than IDA
-\section{Informed Search Strategies Evaluation}
-
-\begin{table} [ht!]                                             
-\centering                                                
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|}    
-
-\multicolumn{4}{c}{ \textbf{Performance of IDA on three maps}}   \\                                           
-\cline{1-4}                                                    
-\multicolumn{1}{|c|}{} & MAP1 & MAP2 & MAP3  \\
-\hline                                                    
-Deepest level reached & 511 & 255 & 1143  \\ 
-\hline                                                         
-Total of stored nodes & 7363 & 6999 & 35410 \\
-\hline                                                         
-Total of visited nodes & 22433 & 21943 & 116461 \\ 
-\hline
-                                                 
-\end{tabular}                                             
-\caption{}                                  
-\label{table:maps}                                
-\end{table}  
-Table \ref{table:maps} shows that the amount of visited and stored nodes strongly depends on the maps size. While searching the state space for solution, a greater state space has to be traversed. The deepest level reached stands for the state distance between to goals.  On the second map the goals are almost sorted, resulting in less states to be visited when searching for the next goal.
-
+\section{A*}
+\paragraph{Completeness of A*} A search algorithm is complete, if it can tell whether the goal is reachable or not. If it is reachable it is able to find this path. If the algorithms gets stuck in a loop it is not complete. To avoid loops, A* needs an admissible heuristic, like the manhattan distance. 
+\paragraph{Termination of A*} A* ends the search, once the goal has been found, or it has been discovered tat the goal is unreachable
+%https://ocw.mit.edu/courses/aeronautics-and-astronautics/16-410-principles-of-autonomy-and-decision-making-fall-2010/lecture-notes/MIT16_410F10_lec04.pdf
+\paragraph{A* with Consistent Heuristics}
+If a consistent heuristic is used with the A* algorithm, then A* expands nodes in order of increasing \(f(n)\) values.
 
 
 
