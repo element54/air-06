@@ -67,6 +67,7 @@ BFS is a case of Greedy Best-First Search, when the cost to reach any node in th
 
 Since greedy search algorithms do not use backtracking, the first node in the next layer, which is reachable from a current node, has to be reachable at the lowest path cost. In this case, DFS and  Greedy Best-First Search would behave alike until the goal has been reached. 
 
+Greedy  Best-First search always chooses the node which seems to be best next. UCS does basically the same, but is able to backtrack. If there is no need to backtrack their behavior is alike.
 \paragraph{UCS is a Case of A*}
 In general, UCS is the uninformed version A*. While UCS has no information at any point how close it is to the goal, this information if provided to A* by heuristics.
 %UCS considers all reachable nodes, in order to keep the total path cost at a minimum, whereas A* expands always the path with the lowest cost \( f(n)\). Whenever 
@@ -81,6 +82,29 @@ If a consistent heuristic is used with the A* algorithm, then A* expands nodes i
 
 
 \section{Implementation of the Algorithms}
+
+\begin{table} [ht!]                                             
+\centering                                                
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}    
+
+\multicolumn{5}{c}{ \textbf{Performance of IDA on three maps}}   \\                                           
+\cline{1-5}                                                    
+\multicolumn{1}{|c|}{} & Greedy + Misplaced & Greedy + Manhattan & A* + Misplaced & A* + Manhattan   \\
+\hline                                                    
+Iterations & 658 & 373 & 38470 & 4254 \\ 
+\hline                                                         
+Fringe & 427 & 243 & 15740 & 2278\\
+\hline                                                         
+Visited & 657 & 372 & 38469 & 4253 \\ 
+\hline
+Depth & 44 & 56 & 26 & 26 \\ 
+\hline
+                                                 
+\end{tabular}                                             
+\caption{}                                  
+\label{table:maps}                                
+\end{table}  
+
 \paragraph{Heuristics}
 The misplaced tiles heuristic only considers but not the distance of a tile to it's designated position. This distance is used by the Manhattan distance heuristic. Misplaced tiles is therefore less expressive in regard to the distance of the goal state. Another problem which arises when misplaced tiles is used, is that it is likely that several states which are reachable have the same fitness value. This might happen too when the Manhattan distance is used but due to the lager fitness space it is less likely. This makes is easier for an algorithm to choose a new state which is closer to the goal.  
 
