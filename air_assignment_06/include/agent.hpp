@@ -70,9 +70,15 @@ private:
 
     Puzzle& state_of(Node &node);
     Cost& cost_of(Node &node);
+    int cost_sum(Cost &cost);
+    int cost_sum(Node &node);
+
+    Node create_node(Puzzle &puzzle, Cost &cost);
+    Cost create_cost(int h, int g);
 
     bool is_goal(Puzzle &p);
     bool is_equal(Puzzle &pa, Puzzle &pb);
+
 
     std::vector<Node> expand(Node &n);
 

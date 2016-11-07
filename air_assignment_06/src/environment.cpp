@@ -68,7 +68,7 @@ void Environment::generate_puzzle() {
 	bool inserted = false;
 	srand((unsigned) time(NULL));
 
-	//int array[] = { 1, 4, 8, 3, 6, 2, 0, 5, 7 };
+    //int array[] = { 1, 4, 8, 3, 6, 2, 0, 5, 7 };
     //int array[] = { 1, 2, 3, 4, 0, 6, 7, 8, 5 };
     int array[] = { 1, 2, 3, 4, 5, 6, 0, 7, 8 };
 	int index = 0;

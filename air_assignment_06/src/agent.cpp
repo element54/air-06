@@ -36,59 +36,12 @@ Agent::Agent(Puzzle puzzle, Solver s, Heuristic h) :
     }
 }
 
-bool Agent::is_goal(Puzzle &p) {
-    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
-        int row = i / NUM_COLS;
-        int col = i % NUM_COLS;
-        if(p[row][col] != (i + 1) % (NUM_ROWS * NUM_COLS))
-            return false;
-    }
-    return true;
-}
-
-
-bool Agent::is_equal(Puzzle &pa, Puzzle &pb) {
-    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
-        int row = i / NUM_COLS;
-        int col = i % NUM_COLS;
-        if(pa[row][col] != pb[row][col] )
-            return false;
-    }
-    return true;
-}
-
  Agent::~Agent() {
  }
 
  void Agent::run() {
     (this->*solver)();
  }
-
-int Agent::misplaced_tiles(Puzzle puzzle) {
-    int res = 0;
-    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
-        int row = i / NUM_COLS;
-        int col = i % NUM_COLS;
-        if(puzzle[row][col] != 0)
-            res += (((i + 1) % (NUM_ROWS * NUM_COLS)) != puzzle[row][col] ? 1 : 0);
-    }
-    return res;
-}
-
-int Agent::manhattan_distance(Puzzle puzzle) {
-    int res = 0;
-    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
-        int row = i / NUM_COLS;
-        int col = i % NUM_COLS;
-        int num = puzzle[row][col];
-        if(num != 0) {
-            int target_row = (num - 1) / NUM_COLS;
-            int target_col = (num - 1) % NUM_COLS;
-            res += std::abs(row - target_row) + std::abs(col - target_col);
-        }
-    }
-    return res;
-}
 
 Puzzle Agent::switch_nums(Puzzle &puzzle, int row1, int col1, int row2, int col2) {
     Puzzle ret = puzzle;
@@ -104,10 +57,24 @@ Cost& Agent::cost_of(Node &node) {
     return node.second;
 }
 
+int Agent::cost_sum(Node &node) {
+    return cost_sum(cost_of(node));
+}
+
+int Agent::cost_sum(Cost &cost) {
+    return cost.first + cost.second;
+}
+
 
 std::vector<Node> Agent::expand(Node &node) {
     std::vector<Node> childs;
     Puzzle &puzzle = state_of(node);
+    for(int i = 0;i<4;i++) {
+        int rowadd = (i % 2) * 2;
+        int coladd = ((i + 1) % 2) * 2;
+        cout << rowadd << " " << coladd << endl;
+    }
+    cout << endl;
     for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
         int row = i / NUM_COLS;
         int col = i % NUM_COLS;
@@ -164,14 +131,14 @@ void Agent::greedy_search() {
         Puzzle puzzle = state_of(node);
         Cost cost = cost_of(node);
 
-        print_puzzle(puzzle);
+        //print_puzzle(puzzle);
         if(is_goal(puzzle)) {
             cout << "Success!" << endl;
+            print_puzzle(puzzle);
             return;
         }
         visited.push_back(node);
         fringe.erase(fringe.begin() + min_index);
-        cout << endl;
         std::vector<Node> childs = expand(node);
         for(Node &child : childs) {
             //print_puzzle(state_of(child));
@@ -210,94 +177,66 @@ void Agent::greedy_search() {
 
 }
 
-void Agent::a_star_expand(std::vector<Node> &fringe, std::vector<Node> &visited, Node &node, int row, int col, int newrow, int newcol) {
-    if(newrow < 0 || newrow >= NUM_ROWS)
-        return;
-    if(newcol < 0 || newcol >= NUM_COLS)
-        return;
-
-    Puzzle np = switch_nums(state_of(node), row, col, newrow, newcol);
-    Cost nc = std::make_pair((this->*heuristic)(np), cost_of(node).second + 1);
-    for (auto &n : visited) {
-        Puzzle &p = state_of(n);
-        if(!is_equal(p, np))
-            continue;
-        Cost &c = cost_of(n);
-        if(c.first + c.second < nc.first + nc.second)
-            return;
-    }
-    for (auto &n : fringe) {
-        Puzzle &p = state_of(n);
-        if(!is_equal(p, np))
-            continue;
-        Cost &c = cost_of(n);
-        if(c.first + c.second < nc.first + nc.second)
-            return;
-    }
-    fringe.push_back(std::make_pair(np, nc));
-}
 
 void Agent::a_star() {
-    int steps = 0;
-    std::vector<Node> visited;
-    std::vector<Node> fringe;
-    fringe.push_back(std::make_pair(start, std::make_pair((this->*heuristic)(start), 0)));
-    while(true) {
-        steps++;
-        if(fringe.empty()) {
-            cout << "Failed!" << endl;
-            return;
-        }
 
-        auto cheapest_index = fringe.begin();
-        int cheapest_cost = 9999999;
-        Node cheapest;
-        for (auto i = fringe.begin(); i != fringe.end(); ++i) {
-            auto n = *i;
-            Cost c = cost_of(n);
-            int ct = c.first + c.second;
-            if(ct < cheapest_cost) {
-                cheapest = *i;
-                cheapest_index = i;
-                cheapest_cost = ct;
-            }
-        }
-
-        Node node = cheapest;
-        Puzzle puzzle = state_of(node);
-        fringe.erase(cheapest_index);
-
-        if(steps % 100 == 0) {
-            cout << "Steps: " << steps << endl;
-            cout << "H: " << cost_of(node).first << endl;
-            cout << "G: " << cost_of(node).second << endl;
-            cout << "Fringe: " << fringe.size() << endl;
-            cout << "Visited: " << visited.size() << endl << endl;
-        }
-
-
-        if(is_goal(puzzle)) {
-            cout << "Success!" << endl;
-            return;
-        }
-        visited.push_back(node);
-        for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
-            int row = i / NUM_COLS;
-            int col = i % NUM_COLS;
-            if(puzzle[row][col] != 0)
-                continue;
-
-            a_star_expand(fringe, visited, node, row, col, row - 1, col);
-            a_star_expand(fringe, visited, node, row, col, row + 1, col);
-            a_star_expand(fringe, visited, node, row, col, row, col - 1);
-            a_star_expand(fringe, visited, node, row, col, row, col + 1);
-            break;
-        }
-        // Expand
-
-    }
 }
 
+
+Node Agent::create_node(Puzzle &puzzle, Cost &cost) {
+    return std::make_pair(puzzle, cost);
+}
+
+Cost Agent::create_cost(int h, int g) {
+    return std::make_pair(h, g);
+}
+
+bool Agent::is_goal(Puzzle &p) {
+    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
+        int row = i / NUM_COLS;
+        int col = i % NUM_COLS;
+        if(p[row][col] != (i + 1) % (NUM_ROWS * NUM_COLS))
+            return false;
+    }
+    return true;
+}
+
+
+bool Agent::is_equal(Puzzle &pa, Puzzle &pb) {
+    for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
+        int row = i / NUM_COLS;
+        int col = i % NUM_COLS;
+        if(pa[row][col] != pb[row][col] )
+            return false;
+    }
+    return true;
+}
+
+int Agent::misplaced_tiles(Puzzle puzzle) {
+   int res = 0;
+   for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
+       int row = i / NUM_COLS;
+       int col = i % NUM_COLS;
+       if(puzzle[row][col] != 0)
+           res += (((i + 1) % (NUM_ROWS * NUM_COLS)) != puzzle[row][col] ? 1 : 0);
+   }
+   return res;
+}
+
+int Agent::manhattan_distance(Puzzle puzzle) {
+   int res = 0;
+   for (int i = 0;i < (NUM_ROWS * NUM_COLS); i++) {
+       int row = i / NUM_COLS;
+       int col = i % NUM_COLS;
+       int num = puzzle[row][col];
+       if(num != 0) {
+           int target_row = (num - 1) / NUM_COLS;
+           int target_col = (num - 1) % NUM_COLS;
+           res += std::abs(row - target_row) + std::abs(col - target_col);
+       }
+   }
+   return res;
+}
 
 void Agent::print_puzzle(Puzzle& puzzle) {
 	for (int rows = 0; rows < NUM_ROWS; rows++) {
