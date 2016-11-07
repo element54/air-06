@@ -54,8 +54,11 @@ private:
 
     int (Agent::*heuristic)( Puzzle );
     void (Agent::*solver)( void );
+    Cost (Agent::*create_cost_impl) (Puzzle puzzle, Node parent);
 
 	void greedy_search();
+    void expand(std::vector<Node> &fringe, std::vector<Node> &visited, Node &node);
+    std::vector<Node> get_children(Node &n);
 	void a_star();
     void a_star_expand(std::vector<Node> &fringe, std::vector<Node> &visited, Node &node, int row, int col, int newrow, int newcol);
 	int misplaced_tiles(Puzzle puzzle);
@@ -73,14 +76,16 @@ private:
     int cost_sum(Cost &cost);
     int cost_sum(Node &node);
 
-    Node create_node(Puzzle &puzzle, Cost &cost);
-    Cost create_cost(int h, int g);
+    Node create_node(Puzzle puzzle, Cost cost);
+    Cost create_cost_greedy(Puzzle puzzle, Node parent);
+    Cost create_cost_a_star(Puzzle puzzle, Node parent);
+    Cost create_cost(Puzzle puzzle, Node parent);
 
     bool is_goal(Puzzle &p);
     bool is_equal(Puzzle &pa, Puzzle &pb);
+    bool is_equal(Node &na, Node &nb);
 
 
-    std::vector<Node> expand(Node &n);
 
 };
 
