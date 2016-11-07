@@ -80,5 +80,11 @@ In general, UCS is the uninformed version A*. While UCS has no information at an
 If a consistent heuristic is used with the A* algorithm, then A* expands nodes in order of increasing \(f(n)\) values.
 
 
+\section{Implementation of the Algorithms}
+\paragraph{Heuristics}
+The misplaced tiles heuristic only considers but not the distance of a tile to it's designated position. This distance is used by the Manhattan distance heuristic. Misplaced tiles is therefore less expressive in regard to the distance of the goal state. Another problem which arises when misplaced tiles is used, is that it is likely that several states which are reachable have the same fitness value. This might happen too when the Manhattan distance is used but due to the lager fitness space it is less likely. This makes is easier for an algorithm to choose a new state which is closer to the goal.  
+
+\paragraph{A* and Greedy search}
+A* always finds an optimal path, but doing so it is usually slower than other algorithms. It obtains a global optimum. Greedy search on the other hand always expands to the node which increases the path cost as little as possible. These characteristics allow greedy search to find solutions faster, while A* is able to find better solutions, at the cost of a higher execution time.
 
 \end{document}
